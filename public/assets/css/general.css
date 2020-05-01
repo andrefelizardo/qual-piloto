@@ -1,0 +1,49 @@
+* {
+    font-family: 'Ubuntu', sans-serif;
+
+}
+
+body {
+    margin: 0;
+    padding: 0;
+}
+
+header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: #ccc 1px 1px 7px 3px;
+    padding: 0 2rem;
+}
+
+header .logo-container {
+    padding: 1rem 0;
+    display: flex;
+    align-items: center;
+}
+
+header .logo-container img {
+    width: 4rem;
+    max-width: 50px;
+    margin-right: 1rem;
+}
+
+header .lista-links {
+    list-style: none;
+    display: flex;
+}
+
+header .lista-links a {
+    margin-right: 1rem;
+    opacity: .75;
+    transition: all .25s ease;
+}
+
+header .lista-links a:hover {
+    opacity: 1;
+    transition: all .25s ease;
+}
+
+header .lista-links a img {
+    width: 30px;
+}
