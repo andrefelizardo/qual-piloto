@@ -1,49 +1,68 @@
 * {
-    font-family: 'Ubuntu', sans-serif;
-
+  font-family: 'Ubuntu', sans-serif;
 }
 
 body {
-    margin: 0;
-    padding: 0;
+  margin: 0;
+  padding: 0;
 }
 
 header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    box-shadow: #ccc 1px 1px 7px 3px;
-    padding: 0 2rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  box-shadow: #ccc 1px 1px 7px 3px;
+  padding: 0 2rem;
 }
 
 header .logo-container {
-    padding: 1rem 0;
-    display: flex;
-    align-items: center;
+  padding: 1rem 0;
+  display: flex;
+  align-items: center;
 }
 
 header .logo-container img {
-    width: 4rem;
-    max-width: 50px;
-    margin-right: 1rem;
+  width: 4rem;
+  max-width: 50px;
+  margin-right: 1rem;
 }
 
 header .lista-links {
-    list-style: none;
-    display: flex;
+  list-style: none;
+  display: flex;
 }
 
 header .lista-links a {
-    margin-right: 1rem;
-    opacity: .75;
-    transition: all .25s ease;
+  margin-right: 1rem;
+  opacity: 0.75;
+  transition: all 0.25s ease;
 }
 
 header .lista-links a:hover {
-    opacity: 1;
-    transition: all .25s ease;
+  opacity: 1;
+  transition: all 0.25s ease;
 }
 
 header .lista-links a img {
-    width: 30px;
+  width: 30px;
 }
+
+.upload-state {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  padding: 3rem 5rem;
+}
+
+.upload-state .container-upload-image {
+  font-size: 1.25rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  border-radius: 20px;
+  box-shadow: 1px 1px 5px 2px #ccc;
+  padding: 5rem;
+  margin-top: 3rem;
+  cursor: pointer;
+}
+
