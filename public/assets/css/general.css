@@ -63,6 +63,14 @@ header .lista-links a img {
   box-shadow: 1px 1px 5px 2px #ccc;
   padding: 5rem;
   margin-top: 3rem;
-  cursor: pointer;
+  position: relative;
 }
 
+.upload-state .container-upload-image input[type=file] {
+    cursor: pointer;
+    position: absolute;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    opacity: 0;
+}

@@ -9,6 +9,11 @@
     },
     "author": "",
     "license": "ISC",
+    "config": {
+        "cz-customizable": {
+            "config": "test.js"
+        }
+    },
     "dependencies": {
       "aws-sdk": "^2.658.0"
     },
