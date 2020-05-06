@@ -16,7 +16,7 @@ function sendImageToBucket(file) {
     const headersAPI = new Headers();
     headersAPI.append('x-api-key', 'KVeA4Rn3qPaOm0TOIw7lT44F2taCi9q63fn99GP2');
     fetch(
-      'https://4vic25fj6b.execute-api.us-east-1.amazonaws.com/prod/upload-to-s3',
+      'https://4vic25fj6b.execute-api.us-east-1.amazonaws.com/prod/upload-photo',
       {
         method: 'POST',
         body: file,
