@@ -13,10 +13,17 @@
         <h2 class="container-principal__texto-chamada">
             Com qual piloto do Choque de Cultura você se parece?
         </h2>
-        <button class="container-principal__botao-upload">
+        <!-- <div class="container-upload-image">
+            <input type="file" name="image" id="image" accept="image/*" multiple="false">
+            <img src="./assets/imgs/upload-image.png">
+            <span>Escolher imagem</span>
+        </div> -->
+        <div class="container-principal__botao-upload">
+            <input type="file" name="image" id="image" accept="image/*" multiple="false">
             <img class="botao-upload__icone" src="./assets/imgs/upload-icon.png" alt="Ícone de upload">
-            <span>Escolha uma imagem</span>
-        </button>
+            <span class="botao-upload__texto-inicial">Escolha uma imagem</span>
+            <span class="botao-upload__texto-uploading">realizando upload...</span>
+        </div>
         <p class="container-principal__texto">
             Escolha uma foto que só aparece você pra gente testar melhor!
         </p>

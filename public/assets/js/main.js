@@ -12,7 +12,12 @@ function actionChooseImage() {
   });
 }
 
+function initUpload() {
+  document.querySelector('.container-principal__botao-upload').classList.add('uploading')
+}
+
 function sendImageToBucket(file) {
+    initUpload();
     const headersAPI = new Headers();
     headersAPI.append('x-api-key', 'KVeA4Rn3qPaOm0TOIw7lT44F2taCi9q63fn99GP2');
     fetch(
@@ -26,7 +31,10 @@ function sendImageToBucket(file) {
       .then((res) => {
         console.log(res);
       })
-      .catch((error) => console.log(error));
+      .catch((error) => {
+        alert('Provavelmente erro de CORS filhão')
+        console.log(error)
+      });
 }
 
 actionChooseImage();
