@@ -5,55 +5,22 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Com qual piloto você se parece? - André Felizardo Labs*</title>
-    <link href="https://fonts.googleapis.com/css2?family=Ubuntu&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="./assets/css/general.css">
+    <link href="https://fonts.googleapis.com/css2?family=Changa:wght@600&family=Roboto:wght@400;700&display=swap" rel="stylesheet">    <link rel="stylesheet" href="./assets/css/general.css">
 </head>
 
 <body>
-    <header>
-        <div class="logo-container">
-            <img src="./assets/imgs/logo-andre_felizardo.png" alt="">
-            <span>André Felizardo</span>
-        </div>
-        <ul class="lista-links">
-            <li class="lista-links__item">
-                <a href="https://github.com/andrefelizardo" target="_blank"
-                    title="Link para perfil do Github do André Felizardo">
-                    <img src="./assets/imgs/logo-github.png" alt="Logo Github">
-                </a>
-            </li>
-            <li class="lista-links__item">
-                <a href="http://instagram.com/devfelizardo" target="_blank"
-                    title="Link para perfil do Instagram do André Felizardo">
-                    <img src="./assets/imgs/logo-instagram.png" alt="Logo Instagram">
-                </a>
-            </li>
-            <li class="lista-links__item">
-                <a href="https://www.linkedin.com/company/escola-andre-felizardo/" target="_blank"
-                    title="Link para página do LinkedIn da Escola de Programação André Felizardo">
-                    <img src="./assets/imgs/logo-linkedin.png" alt="Logo LinkedIn">
-                </a>
-            </li>
-            <li class="lista-links__item">
-                <a href="http://www.andrefelizardo.com.br/blog" target="_blank"
-                    title="Link para blog do André Felizardo">
-                    <img src="./assets/imgs/logo-andre_felizardo.png">
-                </a>
-            </li>
-        </ul>
-    </header>
-
-    <section class="upload-state">
-        <h2>Com qual piloto você se parece?</h2>
-        <p>Envie uma foto sua e descubra com qual dos pilotos do Choque de Cultura você mais se parece.</p>
-        <p>Escolha uma foto que só você aparece para que possamos testar melhor!</p>
-
-        <div class="container-upload-image">
-            <input type="file" name="image" id="image" accept="image/*" multiple="false">
-            <img src="./assets/imgs/upload-image.png">
-            <span>Escolher imagem</span>
-        </div>
-    </section>
+    <main class="container-principal">
+        <h2 class="container-principal__texto-chamada">
+            Com qual piloto do Choque de Cultura você se parece?
+        </h2>
+        <button class="container-principal__botao-upload">
+            <img class="botao-upload__icone" src="./assets/imgs/upload-icon.png" alt="Ícone de upload">
+            <span>Escolha uma imagem</span>
+        </button>
+        <p class="container-principal__texto">
+            Escolha uma foto que só aparece você pra gente testar melhor!
+        </p>
+    </main>
     <script src="./assets/js/main.js"></script>
 </body>
 
