@@ -1,24 +1,23 @@
 {
-    "name": "face-projeto",
-    "version": "1.0.0",
-    "description": "",
-    "main": "index.js",
-    "scripts": {
-      "start": "node index.js",
-      "test": "echo \"Error: no test specified\" && exit 1"
-    },
-    "author": "",
-    "license": "ISC",
-    "config": {
-        "cz-customizable": {
-            "config": "test.js"
-        }
-    },
-    "dependencies": {
-      "aws-sdk": "^2.658.0"
-    },
-    "devDependencies": {
-      "@types/node": "^13.13.0"
+  "name": "face-projeto",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "config": {
+    "cz-customizable": {
+      "config": "test.js"
     }
+  },
+  "dependencies": {
+    "aws-sdk": "^2.672.0"
+  },
+  "devDependencies": {
+    "@types/node": "^13.13.0"
   }
-  
+}

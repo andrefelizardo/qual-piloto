@@ -20,10 +20,10 @@ module.exports.main = (event, context, callback) => {
       console.log('response 200', data, data.Payload);
 
       callFaceAnalise()
-        .then(() => {
+        .then((dados) => {
           const response = {
             statusCode: 200,
-            body: JSON.parse(data.Payload),
+            body: JSON.stringify(dados),
           };
           callback(null, response);
         })
@@ -44,24 +44,28 @@ function callFaceAnalise() {
     const params = {
       FunctionName:
         'arn:aws:lambda:us-east-1:216203729337:function:faceAnalise',
+        Payload: JSON.stringify({
+          key: '_analise.png'
+        })
     };
     lambda.invoke(params, function (err, data) {
       if (err) {
         console.log('erro callFaceAnalise', err);
-        reject('erro');
         const responseError = {
           statusCode: 400,
           body: JSON.stringify({ error: 'Erro ao analisar face' }),
         };
+        reject(responseError);
         callback(responseError, null);
       } else {
+        console.log(data);
         console.log('response 200 no faceAnalise');
         const response = {
           statusCode: 201,
           body: 'Foi',
         };
-        resolve();
-        callback(null, response);
+        resolve(data);
+        // callback(null, response);
       }
     });
   });

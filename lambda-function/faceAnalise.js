@@ -5,7 +5,7 @@ const Rekognition = new AWS.Rekognition();
 
 let faceIdDetectadas = [];
 
-function detectaFaces() {
+function detectaFaces(key) {
   const params = {
     CollectionId: 'faces',
     DetectionAttributes: ['DEFAULT'],
@@ -13,7 +13,7 @@ function detectaFaces() {
     Image: {
       S3Object: {
         Bucket: 'face-analise-js-example',
-        Name: '_analise.png',
+        Name: key,
       },
     },
   };
@@ -21,77 +21,106 @@ function detectaFaces() {
 }
 
 function criaListaFaceIdDetectadas(facesDetectadas) {
-  console.log('### criaListaFaceIdDetectadas ###', facesDetectadas);
-  facesDetectadas.forEach((imagem) => {
-    faceIdDetectadas.push(imagem.Face.FaceId);
+  return new Promise((resolve, reject) => {
+    console.log('### criaListaFaceIdDetectadas ###', facesDetectadas);
+    facesDetectadas.forEach((imagem) => {
+      faceIdDetectadas.push(imagem.Face.FaceId);
+    });
+    resolve(faceIdDetectadas);
   });
-  comparaImagens(faceIdDetectadas);
+  // comparaImagens(faceIdDetectadas);
 }
 
-async function comparaImagens(faceIdDetectadas) {
-  let resultadoComparacao = [];
-  let count = 0;
+function comparaImagens(faceIdDetectadas) {
+  return new Promise((resolve, reject) => {
+    console.log('compara imagens');
+    let resultadoComparacao = [];
+    let count = 0;
 
-  faceIdDetectadas.forEach(async (faceId, index) => {
-    params = {
-      CollectionId: 'faces',
-      FaceId: faceId,
-      FaceMatchThreshold: 10,
-      MaxFaces: 10,
-    };
-    const promise = Rekognition.searchFaces(params).promise();
-    promise.then((data) => {
-      count = count + 1;
-      data.FaceMatches.forEach((face, indexFace) => {
-        resultadoComparacao.push({
-          similaridade: face.Similarity.toFixed(),
-          nome: face.Face.ExternalImageId,
+    faceIdDetectadas.forEach(async (faceId, index) => {
+      const params = {
+        CollectionId: 'faces',
+        FaceId: faceId,
+        FaceMatchThreshold: 10,
+        MaxFaces: 10,
+      };
+      const promise = Rekognition.searchFaces(params).promise();
+      promise.then((data) => {
+        count = count + 1;
+        data.FaceMatches.forEach((face, indexFace) => {
+          resultadoComparacao.push({
+            similaridade: face.Similarity.toFixed(),
+            nome: face.Face.ExternalImageId,
+          });
         });
+        if (count == faceIdDetectadas.length) {
+          resolve(resultadoComparacao);
+          // publicaDados(resultadoComparacao);
+        }
       });
-      if (count == faceIdDetectadas.length) {
-        publicaDados(resultadoComparacao);
-      }
     });
   });
 }
 
 function publicaDados(dados) {
-  console.log(JSON.stringify(dados));
-  S3.putObject(
-    {
-      Bucket: 'face-analise-js-site',
-      Key: 'dados.json',
-      Body: JSON.stringify(dados),
-      ContentType: 'application/json; charset=utf-8',
-      ACL: 'public-read',
-      CacheControl: 'max-age=60',
-    },
-    (erro, data) => {
-      if (erro) console.log(erro);
-      else {
-        console.log(data);
-        excluiImagensTemporarias(faceIdDetectadas);
+  return new Promise((resolve, reject) => {
+    S3.putObject(
+      {
+        Bucket: 'face-analise-js-site',
+        Key: 'dados.json',
+        Body: JSON.stringify(dados),
+        ContentType: 'application/json; charset=utf-8',
+        ACL: 'public-read',
+        CacheControl: 'max-age=60',
+      },
+      (erro, data) => {
+        if (erro) {
+          console.log(erro);
+          reject(erro);
+        } else {
+          console.log(data, 'agora exclui');
+          // excluiImagensTemporarias(faceIdDetectadas);
+          resolve(dados);
+        }
       }
-    }
-  );
+    );
+  });
 }
 
 function excluiImagensTemporarias(faceIdDetectadas) {
-  Rekognition.deleteFaces(
-    {
-      CollectionId: 'faces',
-      FaceIds: faceIdDetectadas,
-    },
-    (erro, data) => {
-      if (erro) console.log(erro);
-      else console.log('Terminou ação ', data);
-    }
-  );
+  return new Promise((resolve, reject) => {
+    Rekognition.deleteFaces(
+      {
+        CollectionId: 'faces',
+        FaceIds: faceIdDetectadas,
+      },
+      (erro, data) => {
+        if (erro) {
+          console.log(erro);
+          reject(erro);
+        } else {
+          console.log('Terminou ação ', data);
+          resolve();
+        }
+      }
+    );
+  });
 }
 
 module.exports.faceAnalise = (event) => {
-  console.log('face Analise');
-  detectaFaces().then((faces) => criaListaFaceIdDetectadas(faces.FaceRecords));
+  const key = event.key;
+  detectaFaces(key).then((faces) =>
+    criaListaFaceIdDetectadas(faces.FaceRecords).then((faceIdDetectadas) =>
+      comparaImagens(faceIdDetectadas).then((resultadoComparacao) =>
+        publicaDados(resultadoComparacao).then((dados) =>
+          excluiImagensTemporarias(faceIdDetectadas).then(() => {
+            console.log(dados);
+            return dados;
+          })
+        )
+      )
+    )
+  );
 };
 
 // function deletaFaces() {
