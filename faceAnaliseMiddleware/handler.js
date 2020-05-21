@@ -22,7 +22,6 @@ module.exports.main = (event, context, callback) => {
       callFaceAnalise()
         .then((dados) => {
           const response = {
-            statusCode: 200,
             body: JSON.stringify(dados),
           };
           callback(null, response);
@@ -58,12 +57,7 @@ function callFaceAnalise() {
         reject(responseError);
         callback(responseError, null);
       } else {
-        console.log(data);
-        console.log('response 200 no faceAnalise');
-        const response = {
-          statusCode: 201,
-          body: 'Foi',
-        };
+        console.log(data, 'retorno do faceAnalise');
         resolve(data);
         // callback(null, response);
       }

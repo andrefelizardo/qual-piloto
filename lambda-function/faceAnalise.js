@@ -22,7 +22,7 @@ function detectaFaces(key) {
 
 function criaListaFaceIdDetectadas(facesDetectadas) {
   return new Promise((resolve, reject) => {
-    console.log('### criaListaFaceIdDetectadas ###', facesDetectadas);
+    // console.log('### criaListaFaceIdDetectadas ###', facesDetectadas);
     facesDetectadas.forEach((imagem) => {
       faceIdDetectadas.push(imagem.Face.FaceId);
     });
@@ -33,11 +33,12 @@ function criaListaFaceIdDetectadas(facesDetectadas) {
 
 function comparaImagens(faceIdDetectadas) {
   return new Promise((resolve, reject) => {
-    console.log('compara imagens');
+    // console.log('compara imagens');
     let resultadoComparacao = [];
     let count = 0;
 
-    faceIdDetectadas.forEach(async (faceId, index) => {
+    faceIdDetectadas.forEach((faceId, index) => {
+      console.log(faceId);
       const params = {
         CollectionId: 'faces',
         FaceId: faceId,
@@ -78,8 +79,9 @@ function publicaDados(dados) {
           console.log(erro);
           reject(erro);
         } else {
-          console.log(data, 'agora exclui');
+          // console.log(data, 'agora exclui');
           // excluiImagensTemporarias(faceIdDetectadas);
+          console.log(dados, ' dados para o front');
           resolve(dados);
         }
       }
@@ -107,16 +109,20 @@ function excluiImagensTemporarias(faceIdDetectadas) {
   });
 }
 
-module.exports.faceAnalise = (event) => {
+module.exports.faceAnalise = (event, context, callback) => {
   const key = event.key;
   detectaFaces(key).then((faces) =>
     criaListaFaceIdDetectadas(faces.FaceRecords).then((faceIdDetectadas) =>
       comparaImagens(faceIdDetectadas).then((resultadoComparacao) =>
         publicaDados(resultadoComparacao).then((dados) =>
-          excluiImagensTemporarias(faceIdDetectadas).then(() => {
-            console.log(dados);
-            return dados;
-          })
+          {
+
+            excluiImagensTemporarias(faceIdDetectadas).then(() => {
+              console.log(dados, ' dados no final');
+              callback(null, dados);
+              // return JSON.stringify(dados);
+            })
+          }
         )
       )
     )
@@ -143,11 +149,11 @@ module.exports.faceAnalise = (event) => {
 // function deletaCollection() {
 //     var params = {
 //         CollectionId: "faces"
-//        };
-//        Rekognition.deleteCollection(params, (erro, data) => {
-//            if (erro) console.log(erro)
-//            else console.log(data, 'deletado')
-//        })
+//         };
+//         Rekognition.deleteCollection(params, (erro, data) => {
+//             if (erro) console.log(erro)
+//             else console.log(data, 'deletado')
+//         })
 // }
 
 // deletaCollection()
