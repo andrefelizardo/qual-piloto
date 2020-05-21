@@ -2,7 +2,6 @@ function actionChooseImage() {
   const input = document.querySelector('input[type=file]#image');
   input.addEventListener('change', (data) => {
     const file = data.path[0].files[0];
-    console.log(file);
     const blob = file.slice(0, file.size, file.type);
     const newName = file.name.replace(
       file.name.slice(0, file.name.indexOf('.')),
@@ -28,8 +27,10 @@ function sendImageToBucket(file, fileType) {
       {
         headers: {
           'x-api-key': 'KVeA4Rn3qPaOm0TOIw7lT44F2taCi9q63fn99GP2',
-          'content-type': fileType
+          'content-type': fileType,
         },
+        onUploadProgress: (progressEvent) =>
+          updateProgressOnButton(progressEvent.loaded, progressEvent.total),
       }
     )
     .then((res) => {
@@ -39,6 +40,15 @@ function sendImageToBucket(file, fileType) {
       alert('Provavelmente erro de CORS filhão');
       console.log(error);
     });
+}
+
+function updateProgressOnButton(loaded, total) {
+  const textButton = document.querySelector('.botao-upload__texto-uploading');
+  if (loaded !== total) {
+    textButton.innerText = parseInt((loaded / total) * 100) + '%';
+  } else {
+    textButton.innerText = 'processando...'
+  }
 }
 
 actionChooseImage();
