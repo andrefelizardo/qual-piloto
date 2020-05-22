@@ -17,12 +17,11 @@ module.exports.main = (event, context, callback) => {
       };
       callback(responseError, null);
     } else if (data) {
-      console.log('response 200', data, data.Payload);
 
       callFaceAnalise()
         .then((dados) => {
           const response = {
-            body: JSON.stringify(dados),
+            body: JSON.stringify(dados.Payload),
           };
           callback(null, response);
         })
