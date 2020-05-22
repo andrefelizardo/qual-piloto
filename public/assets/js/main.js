@@ -16,6 +16,8 @@ function initUpload() {
   document
     .querySelector('.container-principal__botao-upload')
     .classList.add('uploading');
+  document.querySelector('.container-principal').classList.add('uploading');
+  updateProgress(10, 100);
 }
 
 function sendImageToBucket(file, fileType) {
@@ -30,11 +32,12 @@ function sendImageToBucket(file, fileType) {
           'content-type': fileType,
         },
         onUploadProgress: (progressEvent) =>
-          updateProgressOnButton(progressEvent.loaded, progressEvent.total),
+          updateProgress(progressEvent.loaded, progressEvent.total),
       }
     )
     .then((res) => {
-      console.log(res);
+      const data = JSON.parse(res.data.body);
+      showResults(data);
     })
     .catch((error) => {
       alert('Provavelmente erro de CORS filhão');
@@ -42,13 +45,28 @@ function sendImageToBucket(file, fileType) {
     });
 }
 
-function updateProgressOnButton(loaded, total) {
+function updateProgressOnButton(progress, finished) {
   const textButton = document.querySelector('.botao-upload__texto-uploading');
-  if (loaded !== total) {
-    textButton.innerText = parseInt((loaded / total) * 100) + '%';
+  if (!finished) {
+    textButton.innerText = progress;
   } else {
-    textButton.innerText = 'processando...'
+    textButton.innerText = 'processando...';
   }
+}
+
+function updateProgress(loaded, total) {
+  const progress = parseInt((loaded / total) * 100) + '%';
+  updateProgressOnButton(progress, loaded == total ? true : false);
+  updateProgressOnBackground(progress);
+}
+
+function updateProgressOnBackground(progress) {
+  const body = document.querySelector('body');
+  body.style.background = `linear-gradient(90deg, rgba(255,204,104,1) 0%, rgba(255,204,104,1) ${progress}, rgba(28,37,217,1) ${progress}, rgba(28,37,217,1) 100%)`;
+}
+
+function showResults(data) {
+
 }
 
 actionChooseImage();

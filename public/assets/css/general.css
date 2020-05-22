@@ -1,11 +1,12 @@
 * {
   font-family: 'Roboto', sans-serif;
+  transition: all .5s ease;
 }
 
 body {
   margin: 0;
   padding: 0;
-  background-color: #1c25d9;
+  background: #1c25d9;
 }
 
 .container-principal {
@@ -29,11 +30,17 @@ body {
   width: 21rem;
   height: 5rem;
   color: #1c25d9;
+  border-radius: 36px;
   font-size: 18px;
   font-weight: bold;
   border: none;
-  background-color: #fff;
+  background-color: #ffcc68;
   position: relative;
+  transition: background-color 0.5s ease-in-out;
+}
+
+.container-principal__botao-upload:hover {
+  background-color: #ccad71;
 }
 
 .container-principal__botao-upload input[type='file'] {
@@ -53,21 +60,31 @@ body {
   display: none;
 }
 
-/* mudança de estado do botão quando começa o upload */
-
-.container-principal__botao-upload.uploading .botao-upload__icone,
-.container-principal__botao-upload.uploading .botao-upload__texto-inicial {
-  display: none;
-}
-
-.container-principal__botao-upload.uploading .botao-upload__texto-uploading {
-  display: initial;
-}
-
 .container-principal__texto {
   width: 21rem;
   font-size: 18px;
   line-height: 1.78;
   font-weight: normal;
   margin-top: 2rem;
+}
+
+/* mudança de estado do botão quando começa o upload */
+
+.container-principal.uploading .botao-upload__icone,
+.container-principal.uploading .botao-upload__texto-inicial {
+  display: none;
+}
+
+.container-principal.uploading .botao-upload__texto-uploading {
+  display: initial;
+}
+
+.container-principal.uploading .container-principal__texto-chamada,
+.container-principal.uploading .container-principal__texto {
+  color: #1c25d9;
+}
+
+.container-principal.uploading .container-principal__botao-upload {
+  background-color: #1c25d9;
+  color: #ffcc68;
 }

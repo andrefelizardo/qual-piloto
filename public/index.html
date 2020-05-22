@@ -5,23 +5,28 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Com qual piloto você se parece? - André Felizardo Labs*</title>
-    <link href="https://fonts.googleapis.com/css2?family=Changa:wght@600&family=Roboto:wght@400;700&display=swap" rel="stylesheet">    <link rel="stylesheet" href="./assets/css/general.css">
+    <link href="https://fonts.googleapis.com/css2?family=Changa:wght@600&family=Roboto:wght@400;700&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="./assets/css/general.css">
 </head>
 
 <body>
     <main class="container-principal">
-        <h2 class="container-principal__texto-chamada">
-            Com qual piloto do Choque de Cultura você se parece?
-        </h2>
-        <div class="container-principal__botao-upload">
-            <input type="file" name="image" id="image" accept="image/*" multiple="false">
-            <img class="botao-upload__icone" src="./assets/imgs/upload-icon.png" alt="Ícone de upload">
-            <span class="botao-upload__texto-inicial">Escolha uma imagem</span>
-            <span class="botao-upload__texto-uploading">1%</span>
+        <div class="estado-inicial">
+            <h2 class="container-principal__texto-chamada">
+                Com qual piloto do Choque de Cultura você se parece?
+            </h2>
+            <div class="container-principal__botao-upload">
+                <input type="file" name="image" id="image" accept="image/*" multiple="false">
+                <img class="botao-upload__icone" src="./assets/imgs/upload-icon.png" alt="Ícone de upload">
+                <span class="botao-upload__texto-inicial">Escolha uma foto sua</span>
+                <span class="botao-upload__texto-uploading">1%</span>
+            </div>
+            <p class="container-principal__texto">
+                Só pode ter você na foto, beleza?<br />
+                Isso ajuda a gente a testar melhor.
+            </p>
         </div>
-        <p class="container-principal__texto">
-            Escolha uma foto que só aparece você pra gente testar melhor!
-        </p>
     </main>
     <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
     <script src="./assets/js/main.js"></script>
