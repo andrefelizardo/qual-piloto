@@ -63,32 +63,6 @@ function comparaImagens(faceIdDetectadas) {
   });
 }
 
-function publicaDados(dados) {
-  return new Promise((resolve, reject) => {
-    S3.putObject(
-      {
-        Bucket: 'face-analise-js-site',
-        Key: 'dados.json',
-        Body: JSON.stringify(dados),
-        ContentType: 'application/json; charset=utf-8',
-        ACL: 'public-read',
-        CacheControl: 'max-age=60',
-      },
-      (erro, data) => {
-        if (erro) {
-          console.log(erro);
-          reject(erro);
-        } else {
-          // console.log(data, 'agora exclui');
-          // excluiImagensTemporarias(faceIdDetectadas);
-          console.log(dados, ' dados para o front');
-          resolve(dados);
-        }
-      }
-    );
-  });
-}
-
 function excluiImagensTemporarias(faceIdDetectadas) {
   return new Promise((resolve, reject) => {
     Rekognition.deleteFaces(
@@ -114,16 +88,10 @@ module.exports.faceAnalise = (event, context, callback) => {
   detectaFaces(key).then((faces) =>
     criaListaFaceIdDetectadas(faces.FaceRecords).then((faceIdDetectadas) =>
       comparaImagens(faceIdDetectadas).then((resultadoComparacao) =>
-        publicaDados(resultadoComparacao).then((dados) =>
-          {
-
-            excluiImagensTemporarias(faceIdDetectadas).then(() => {
-              console.log(dados, ' dados no final');
-              callback(null, dados);
-              // return JSON.stringify(dados);
-            })
-          }
-        )
+        excluiImagensTemporarias(faceIdDetectadas).then(() => {
+          console.log(resultadoComparacao, ' dados no final');
+          callback(null, resultadoComparacao);
+        })
       )
     )
   );
