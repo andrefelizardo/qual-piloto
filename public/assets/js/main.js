@@ -58,11 +58,28 @@ function updateProgress(loaded, total) {
   const progress = parseInt((loaded / total) * 100) + '%';
   updateProgressOnButton(progress, loaded == total ? true : false);
   updateProgressOnBackground(progress);
+  updateProgressOnText(progress);
 }
 
 function updateProgressOnBackground(progress) {
   const body = document.querySelector('body');
   body.style.background = `linear-gradient(90deg, rgba(255,204,104,1) 0%, rgba(255,204,104,1) ${progress}, rgba(28,37,217,1) ${progress}, rgba(28,37,217,1) 100%)`;
+}
+
+function updateProgressOnText(progress) {
+  /* compara se porcentagem é maior que 25 pois esse 
+  seria um tamanho (contando largura do texto e margem)
+  ok para mudar a cor do conteúdo */
+  
+  if (parseInt(progress.slice(0, 2)) > 25) {
+    const textFeatured = document.querySelector('.container-principal__texto-chamada');
+    const text = document.querySelector('.container-principal__texto');
+    const button = document.querySelector('.container-principal__botao-upload');
+    textFeatured.style.color = '#1c25d9';
+    text.style.color = '#1c25d9';
+    button.style.color = '#ffcc68';
+    button.style.backgroundColor = '#1c25d9';
+  }
 }
 
 function showResults(data) {

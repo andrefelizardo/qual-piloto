@@ -1,6 +1,7 @@
 * {
   font-family: 'Roboto', sans-serif;
-  transition: all .5s ease;
+  transition: color .5s ease;
+  transition: background-color .5s ease;
 }
 
 body {
@@ -77,14 +78,4 @@ body {
 
 .container-principal.uploading .botao-upload__texto-uploading {
   display: initial;
-}
-
-.container-principal.uploading .container-principal__texto-chamada,
-.container-principal.uploading .container-principal__texto {
-  color: #1c25d9;
-}
-
-.container-principal.uploading .container-principal__botao-upload {
-  background-color: #1c25d9;
-  color: #ffcc68;
 }
