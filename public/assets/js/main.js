@@ -83,7 +83,7 @@ function updateProgressOnText(progress) {
 }
 
 function showResults(data) {
-
+  document.querySelector('.container-principal').classList.add('resultado');
 }
 
 actionChooseImage();

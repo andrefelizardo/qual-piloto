@@ -69,6 +69,43 @@ body {
   margin-top: 2rem;
 }
 
+.container-resultado {
+  display: none;
+}
+
+.container-resultado__titulo {
+  font-family: 'Changa', sans-serif;
+  font-size: 32px;
+  font-weight: 600;
+  line-height: 1.25;
+  letter-spacing: -2px;
+  margin-bottom: 2rem;
+}
+
+.container-resultado__foto-piloto {
+  width: 25rem;
+  height: 25rem;
+  border-radius: 20px;
+  margin-bottom: 1.5rem;
+}
+
+.container-resultado__nome-piloto {
+  font-family: 'Changa', sans-serif;
+  font-size: 72px;
+  font-weight: 600;
+  line-height: 1.1;
+  letter-spacing: -2px;
+}
+
+.container-resultado__semelhanca {
+  font-size: 18px;
+}
+
+.container-resultado__botao-retest {
+  border: 2px solid rgba(255, 255, 255, .1);
+  border-radius: 36px;
+}
+
 /* mudança de estado do botão quando começa o upload */
 
 .container-principal.uploading .botao-upload__icone,
@@ -77,5 +114,22 @@ body {
 }
 
 .container-principal.uploading .botao-upload__texto-uploading {
+  display: initial;
+}
+
+/* mudança do visual para exibir o resultado */
+
+.container-principal.resultado {
+  margin: 0;
+  display: flex;
+  justify-content: center;
+  text-align: center;
+}
+
+.container-principal.resultado .estado-inicial {
+  display: none;
+}
+
+.container-principal.resultado .container-resultado {
   display: initial;
 }
