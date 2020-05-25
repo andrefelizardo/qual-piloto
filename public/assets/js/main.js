@@ -40,7 +40,7 @@ function sendImageToBucket(file, fileType) {
       showResults(data);
     })
     .catch((error) => {
-      alert('Provavelmente erro de CORS filhão');
+      // alert('Provavelmente erro de CORS filhão');
       console.log(error);
     });
 }
@@ -70,9 +70,11 @@ function updateProgressOnText(progress) {
   /* compara se porcentagem é maior que 25 pois esse 
   seria um tamanho (contando largura do texto e margem)
   ok para mudar a cor do conteúdo */
-  
+
   if (parseInt(progress.slice(0, 2)) > 25) {
-    const textFeatured = document.querySelector('.container-principal__texto-chamada');
+    const textFeatured = document.querySelector(
+      '.container-principal__texto-chamada'
+    );
     const text = document.querySelector('.container-principal__texto');
     const button = document.querySelector('.container-principal__botao-upload');
     textFeatured.style.color = '#1c25d9';
@@ -83,7 +85,37 @@ function updateProgressOnText(progress) {
 }
 
 function showResults(data) {
+  const results = JSON.parse(data);
+  console.log(results, results[0]);
+  // const results = [
+  //   // { similaridade: '31', nome: 'maurilio' },
+  //   // { similaridade: '29', nome: 'rogerinho' },
+  //   { similaridade: '17', nome: 'julinho' },
+  // ];
+  const pilot = results[0];
+
+  const photo = document.querySelector('.container-resultado__foto-piloto');
+  const name = document.querySelector('.container-resultado__nome-piloto');
+  const similarity = document.querySelector('.container-resultado__semelhanca');
+
+  photo.setAttribute('src', `./assets/imgs/${pilot.nome}.png`);
+  name.textContent = pilot.nome;
+  similarity.textContent = `${pilot.similaridade}% semelhante`;
+
+  document.querySelector('body').style.background = '#1c25d9';
   document.querySelector('.container-principal').classList.add('resultado');
+}
+
+function toggleFabList() {
+  const buttonShare = document
+  .querySelector('.container-resultado__botao-compartilhar');
+  if (!buttonShare.classList.contains('open')) {
+    document.querySelector('.fab-button-list').classList.add('open');
+    buttonShare.classList.add('open');
+  } else {
+    document.querySelector('.fab-button-list').classList.remove('open');
+    buttonShare.classList.remove('open');
+  }
 }
 
 actionChooseImage();
