@@ -2,8 +2,6 @@ const AWS = require('aws-sdk');
 
 const Rekognition = new AWS.Rekognition();
 
-let faceIdDetectadas = [];
-
 function detectaFaces(key) {
   const params = {
     CollectionId: 'faces',
@@ -21,8 +19,8 @@ function detectaFaces(key) {
 
 function criaListaFaceIdDetectadas(facesDetectadas) {
   return new Promise((resolve, reject) => {
-    console.log('### criaListaFaceIdDetectadas ###', facesDetectadas);
-    faceIdDetectadas = [];
+    // console.log('### criaListaFaceIdDetectadas ###', facesDetectadas);
+    let faceIdDetectadas = [];
     facesDetectadas.forEach((imagem) => {
       faceIdDetectadas.push(imagem.Face.FaceId);
     });
@@ -97,10 +95,7 @@ module.exports.main = (event, context, callback) => {
             });
           })
           .catch((error) => {
-            console.error(error, 'erro compara imagens');
             excluiImagensTemporarias(faceIdDetectadas).then(() => {
-              console.log('imagens excluidas após erro');
-              console.log('chamando callback de erro');
               callback(error, null);
             });
           });
