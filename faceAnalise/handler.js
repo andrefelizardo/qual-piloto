@@ -1,6 +1,5 @@
 const AWS = require('aws-sdk');
 
-const S3 = new AWS.S3();
 const Rekognition = new AWS.Rekognition();
 
 let faceIdDetectadas = [];
@@ -22,23 +21,22 @@ function detectaFaces(key) {
 
 function criaListaFaceIdDetectadas(facesDetectadas) {
   return new Promise((resolve, reject) => {
-    // console.log('### criaListaFaceIdDetectadas ###', facesDetectadas);
+    console.log('### criaListaFaceIdDetectadas ###', facesDetectadas);
+    faceIdDetectadas = [];
     facesDetectadas.forEach((imagem) => {
       faceIdDetectadas.push(imagem.Face.FaceId);
     });
     resolve(faceIdDetectadas);
   });
-  // comparaImagens(faceIdDetectadas);
 }
 
 function comparaImagens(faceIdDetectadas) {
   return new Promise((resolve, reject) => {
-    // console.log('compara imagens');
     let resultadoComparacao = [];
     let count = 0;
 
     faceIdDetectadas.forEach((faceId, index) => {
-      console.log(faceId);
+      console.log(faceId, '#FACEID#');
       const params = {
         CollectionId: 'faces',
         FaceId: faceId,
@@ -46,19 +44,22 @@ function comparaImagens(faceIdDetectadas) {
         MaxFaces: 10,
       };
       const promise = Rekognition.searchFaces(params).promise();
-      promise.then((data) => {
-        count = count + 1;
-        data.FaceMatches.forEach((face, indexFace) => {
-          resultadoComparacao.push({
-            similaridade: face.Similarity.toFixed(),
-            nome: face.Face.ExternalImageId,
+      promise
+        .then((data) => {
+          count = count + 1;
+          data.FaceMatches.forEach((face, indexFace) => {
+            resultadoComparacao.push({
+              similaridade: face.Similarity.toFixed(),
+              nome: face.Face.ExternalImageId,
+            });
           });
+          if (count == faceIdDetectadas.length) {
+            resolve(resultadoComparacao);
+          }
+        })
+        .catch((error) => {
+          reject(error);
         });
-        if (count == faceIdDetectadas.length) {
-          resolve(resultadoComparacao);
-          // publicaDados(resultadoComparacao);
-        }
-      });
     });
   });
 }
@@ -72,7 +73,7 @@ function excluiImagensTemporarias(faceIdDetectadas) {
       },
       (erro, data) => {
         if (erro) {
-          console.log(erro);
+          console.log(erro, 'erro ao excluir imagens');
           reject(erro);
         } else {
           console.log('Terminou ação ', data);
@@ -83,17 +84,28 @@ function excluiImagensTemporarias(faceIdDetectadas) {
   });
 }
 
-module.exports.faceAnalise = (event, context, callback) => {
+module.exports.main = (event, context, callback) => {
   const key = event.key;
   detectaFaces(key).then((faces) =>
-    criaListaFaceIdDetectadas(faces.FaceRecords).then((faceIdDetectadas) =>
-      comparaImagens(faceIdDetectadas).then((resultadoComparacao) =>
-        excluiImagensTemporarias(faceIdDetectadas).then(() => {
-          console.log(resultadoComparacao, ' dados no final');
-          callback(null, resultadoComparacao);
-        })
-      )
-    )
+    criaListaFaceIdDetectadas(faces.FaceRecords)
+      .then((faceIdDetectadas) => {
+        comparaImagens(faceIdDetectadas)
+          .then((resultadoComparacao) => {
+            console.log(resultadoComparacao, 'resultado comparação');
+            excluiImagensTemporarias(faceIdDetectadas).then(() => {
+              callback(null, resultadoComparacao);
+            });
+          })
+          .catch((error) => {
+            console.error(error, 'erro compara imagens');
+            excluiImagensTemporarias(faceIdDetectadas).then(() => {
+              console.log('imagens excluidas após erro');
+              console.log('chamando callback de erro');
+              callback(error, null);
+            });
+          });
+      })
+      .catch((error) => console.log(error, 'erro detecta faces'))
   );
 };
 

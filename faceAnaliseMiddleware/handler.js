@@ -26,11 +26,23 @@ module.exports.main = (event, context, callback) => {
           callback(null, response);
         })
         .catch((erro) => {
+          console.log(erro, 'erro callFaceAnalise')
+          // const responseError = {
+          //   statusCode: 400,
+          //   body: JSON.stringify({ error: erro }),
+          // };
+          // callback(responseError, null);
           const responseError = {
-            statusCode: 400,
-            body: JSON.stringify({ error: erro }),
-          };
-          callback(responseError, null);
+            errorType : "InternalServerError",
+            httpStatus : 400,
+            requestId : context.awsRequestId,
+            trace : {
+                "function": "abc()",
+                "line": 123,
+                "file": "abc.js"
+            }
+        }
+        callback(JSON.stringify(myErrorObj));
         });
     }
   });
@@ -41,20 +53,21 @@ function callFaceAnalise() {
     const lambda = new aws.Lambda();
     const params = {
       FunctionName:
-        'arn:aws:lambda:us-east-1:216203729337:function:faceAnalise',
+        'faceanalise-dev-main',
         Payload: JSON.stringify({
           key: '_analise.png'
         })
     };
     lambda.invoke(params, function (err, data) {
-      if (err) {
+      console.log(data.FunctionError);
+      if (data.FunctionError) {
         console.log('erro callFaceAnalise', err);
         const responseError = {
           statusCode: 400,
           body: JSON.stringify({ error: 'Erro ao analisar face' }),
         };
         reject(responseError);
-        callback(responseError, null);
+        // callback(responseError, null);
       } else {
         console.log(data, 'retorno do faceAnalise');
         resolve(data);
